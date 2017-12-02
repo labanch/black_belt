@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% load staticfiles %}
+  <link href="{% static 'poke/style.css' %}" rel="stylesheet">
+  <title>Poke</title>
+</head>
+<body>
+  <div class="header">
+    <div class="user_info col-6">
+      <h1>Welcome, {{currentUser.name}}!</h1>
+      <p>{{poker_count}} people poked you.</p>
+      {% for poker in poker_list %}
+        <p>{{poker.name}} poked you {{poker.id__count}} times</p>
+      {% endfor %}
+    </div>
+    <div class="logout col-6">
+      <a href="/logout">Logout</a></p>
+    </div>
+  </div>
+  <br>
+  <br>
+  <table>
+    	<thead>
+    		<tr>
+          <th>id</th>
+    			<th>name</th>
+    			<th>alias</th>
+    			<th>email</th>
+    			<th>poke history</th>
+          <th>action</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        {% for user in users%}
+    		<tr>
+          <td>{{user.id}}</td>
+    			<td>{{user.name}}</td>
+    			<td>{{user.alias}}</td>
+    			<td>{{user.email}}</td>
+          <td>{{user.pokes_received.all.count}}</td>
+    			<td>
+            <form action="/poke/{{user.id}}" method="POST">
+              {% csrf_token %}
+                <input type="submit" value="Poke">
+            </form>
+          </td>
+    		</tr>
+        {%endfor%}
+    	</tbody>
+    </table>
+</body>
+</html>
